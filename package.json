@@ -1,0 +1,33 @@
+{
+  "name": "expstats.info",
+  "version": "0.0.1",
+  "description": "Second re-Biuld",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "casperjs": "^1.1.4",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "express-handlebars": "^3.0.0",
+    "geoip-lite": "^1.2.1",
+    "helmet": "^3.8.1",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.83.0",
+    "sequelize": "^4.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "later"
+  },
+  "keywords": [
+    "expstats"
+  ],
+  "author": "Dinc",
+  "license": "ISC"
+}

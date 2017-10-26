@@ -1,0 +1,76 @@
+
+body {
+	  background: #252830;
+	  color: #cfd2da;
+	}
+
+div.block-info, th span {
+	  outline: 0.5px groove 	#A9A9A9;  
+	  text-align: center;
+	  display: inline-block;
+	  padding: 10px 10px;
+	  font-weight: 300;
+	  font-size: 16px;
+	  letter-spacing: 0.05em;
+	  color: rgb(169, 174, 189);
+	  text-transform: uppercase;
+	  color: rgb(169, 174, 189);;
+	}
+div.block-info h3{
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+div.timeline-TweetList{
+	background: #252830;
+	}
+div#chart{
+	margin-top: 50px;
+}	
+.twitter{
+	margin-bottom:30px;
+}
+div h1{
+	font-size: 46px;
+	font-weight: 400;
+	text-align: center;
+	font-family:  sans-serif;
+}
+hr{
+	text-align: center;
+}
+div.footer{
+	font-size: 20px;
+	text-align: center;
+	min-height:100px;
+}
+div.dopInfo p {
+	letter-spacing: 0.05em;
+	font-weight: bold;
+	padding-left:0;
+	font-size: 21px;
+}
+.dopInfo ul{
+	list-style: none;
+}
+.dopInfo  a{
+	position: absolute;
+	text-align: left;
+	padding-left: 10px;
+}
+.dopInfo i{
+	text-align:center;
+	width:36px;
+
+}
+form{
+	width:230px;
+	outline: 1px solid white;
+	margin: 20% auto;
+	padding: 20px 20px;
+}
+button{
+	margin: 10px 55px;
+}
+.price{
+	font-size: 30px;
+}
