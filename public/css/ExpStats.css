@@ -4,8 +4,8 @@ body {
 	  color: #cfd2da;
 	}
 
-div.block-info, th span {
-	  outline: 0.5px groove 	#A9A9A9;  
+div.block-info, th span{
+	  outline: 0.5px groove #A9A9A9;  
 	  text-align: center;
 	  display: inline-block;
 	  padding: 10px 10px;
@@ -16,6 +16,17 @@ div.block-info, th span {
 	  text-transform: uppercase;
 	  color: rgb(169, 174, 189);;
 	}
+tr>th span{
+	color: #DC5100;
+}
+tr.addressTable, tr.addressTable a{
+	font-weight: 300;
+	font-size: 17px;
+	color:white;
+}
+tr.addressTable:hover{
+	background: 	#778899;
+}
 div.block-info h3{
 	margin-top: 0;
 	margin-bottom: 20px;
@@ -74,3 +85,26 @@ button{
 .price{
 	font-size: 30px;
 }
+
+
+/* search classes */
+
+.search-block div{
+	display: inline-block;
+}
+input.search{
+	width: 380px;
+}
+button.search{
+	width: 40px;
+	height: 40px;
+	border:none;
+	background: #252830;
+	padding: 0;
+	margin-left: 10px;
+	font-size: 26px;
+}
+button.search:hover{
+	outline: 2px solid #696969;
+}
+

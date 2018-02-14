@@ -4,7 +4,12 @@ const functions = require('./functions');
 
 const express = require('express');
 const request = require('request');
+const snoowrap = require("snoowrap");
 const geoip   = require('geoip-lite');
+// for json parser
+var data = require('./config.js');
+const r = new snoowrap(data);
+
 const router = express.Router();
 const Sequelize = require('sequelize');
 
@@ -34,7 +39,17 @@ const Admin = functions.define('admin', {
   }
 });
 //-----------------------------------------
-
+function calcDate(date){
+	var data = new Date();
+	data.setTime(date*1000);
+	var options = {
+		year: 'numeric',
+		month: 'numeric',
+		day: 'numeric'
+	};
+	return data.toLocaleString("en-US", options);
+}
+//---------------------------------------
 
 router.get('/', (req,res,next) => {
 	console.log(req.cookies);
@@ -74,12 +89,12 @@ router.get('/api', async (req,res,next) => {
 					});
 
 					// запись в БД каждые 5 минут хотя бы 
-					// if(ip != IP){
+					 // if(ip != IP){
 						 Price.create({
 						    price: Number(marketcapInfo['price_usd']).toFixed(2),
 						    date: Date.now()
 						 });
-					// }
+					 // }
 				}
 			}
 			res.json(data);
@@ -87,6 +102,23 @@ router.get('/api', async (req,res,next) => {
 		})
 });
 
+router.get("/api/reddit", async (req,res)=>{
+	var data = [];
+	r.getSubreddit('ExpanseOfficial').getHot().then(Listing =>{
+		// get latest 10 top posts from subreddit, normally it will be Listing.length
+		for(var i = 0; i<10;i++){
+			data.push({
+				"author": Listing[i].author.name,
+				"title": Listing[i].title,
+				"time":  calcDate(Listing[i].created),
+				"score": Listing[i].score,
+				"text": Listing[i].selftext
+			});
+			
+		}
+		res.json(data);
+	})
+})
 
 router.get('/api/prices', async (req,res) => {
 	// Достаем Данные с бд и отправляем на гет запрос
@@ -112,19 +144,37 @@ router.get('/api/table', (req,res) => {
 					var dataCoin = JSON.parse(body);
 					var moreData = dataCoin.data;
 				} catch (e) {
-					console.log("Api Coinmarket Problem" + e);
+					console.log("Api Gander.tech Problem" + e);
 					return next(e,null);
 				}
-				for(var i = 0; i< moreData.length; i++){
+				for(var y = 0; y< moreData.length; y++){
 					data.push({
-						name 	: moreData[i].name,
-						balance : moreData[i].balance
+						name 	: moreData[y].name,
+						balance : moreData[y].balance
 					})
 				}
 				res.json(data);
-			
-			})
-	
+			 })
+})
+// Костыль
+router.get('/api/table2', (req,res) => {
+		var data = [];
+			request('http://52.168.6.76:8080/addresses?page=2', (err,response,body) => {
+				try{
+					var dataCoin = JSON.parse(body);
+					var moreData = dataCoin.data;
+				} catch (e) {
+					console.log("Api Gander.tech Problem" + e);
+					return next(e,null);
+				}
+				for(var y = 0; y< moreData.length; y++){
+					data.push({
+						name 	: moreData[y].name,
+						balance : moreData[y].balance
+					})
+				}
+				res.json(data);
+			 })
 })
 router.get('/api/admin', async (req,res) => {
 	var adminData = [];
@@ -143,11 +193,14 @@ router.get('/api/admin', async (req,res) => {
 	res.json(adminData);
 })
 router.get('/admin', (req,res)=> {	
-	 console.log(req.cookies);
 	 if(req.cookies.name == 'someSecretApp'){
-		res.render('admin');
+		res.render('admin', {
+			author: false,
+			firstName: 'Ivan',
+			lastName: 'Ivan'
+		});
 	 } else {
-	 	res.send('Nea');
+	 	res.send('NiceTry');
 	 }
 })
 //----------------------

@@ -1,5 +1,4 @@
 "use strict";
-// 12.00 - 16.30 - twitch & chat & ikariam
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
@@ -19,8 +18,6 @@ app.set('views', './public/views');
 app.set('view engine', '.hbs');
 app.engine('.hbs', exphbs({defaultLayout:'main', extname: '.hbs'}));
 app.use(express.static('public'));
-
-
 
 
 app.listen(8000, "0.0.0.0", (req,res)=> (

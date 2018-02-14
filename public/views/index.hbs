@@ -4,8 +4,8 @@
 
 <div class = 'container' >
 	<div class="row">
-		
-		<h1>ExpStats</h1></div>
+		<h1>ExpStats</h1>
+	</div>
 
 	<div class="row" >
 		<div class="col-md-9 col-md-offset-1" >
@@ -23,7 +23,6 @@
 	
 		</div>	
 	</div>
-
 	
 	<div class="row">
 		<div class="col-md-6 ">
@@ -84,19 +83,56 @@
 		</div>
 
 	</div>
+
+	<div class="container">
+	<div class="row">
+		<div class="col-md-9 col-md-offset-1">
+			<h2 style="text-align: center">Latest Reddit topics</h2>
+			<table class ='table no-footer'>
+				<thead>
+					<tr>
+						<th><span>Score</span></th>
+						<th><span>Author</span></th>
+						<th><span>Title</span></th>
+						<th><span>Text</span></th>
+						<th><span>Date</span></th>
+					</tr>
+				</thead>
+				<tbody class = "reddit">
+
+
+				</tbody>
+
+			</table>
+		</div>
+	</div>	
+	</div>
+
 	<div class = 'container'>
 	<div class ='row'>
 		<div class="col-md-9 col-md-offset-1">
-			<h2 style="text-align: center">Expanse Top Holders</h2>	
-			<table class ='table no-footer'> 
-				<thead >
-					<tr >
+			<h2 style="text-align: center">Expanse Top Holders</h2>
+			<!-- Search of address-->
+			<div class ='search-block'>
+				<div>
+					<input type="text" class="filter form-control search" name="search" placeholder="Input address">
+				</div> 
+				<div>
+					<button class="search">
+						<i class='fa fa-search'></i>
+					</button>
+				</div>
+			
+			</div>
+			<table class ='table no-footer'>
+				<thead>
+					<tr>
 						<th><span>Address</span></th>
 						<th><span>Amount</span></th>
 						<th><span>USD</span></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class = "richlist">
 					
 				</tbody>
 
