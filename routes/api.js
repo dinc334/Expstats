@@ -106,14 +106,16 @@ router.get("/api/reddit", async (req,res)=>{
 	var data = [];
 	r.getSubreddit('ExpanseOfficial').getHot().then(Listing =>{
 		// get latest 10 top posts from subreddit, normally it will be Listing.length
-		for(var i = 0; i<10;i++){
-			data.push({
-				"author": Listing[i].author.name,
-				"title": Listing[i].title,
-				"time":  calcDate(Listing[i].created),
-				"score": Listing[i].score,
-				"text": Listing[i].selftext
-			});
+		for(var i = 0; i<8;i++){
+			if(Listing[i].selftext !== ''){
+				data.push({
+					"author": Listing[i].author.name,
+					"title": Listing[i].title,
+					"time":  calcDate(Listing[i].created),
+					"score": Listing[i].score,
+					"text": Listing[i].selftext
+				});
+			}
 			
 		}
 		res.json(data);

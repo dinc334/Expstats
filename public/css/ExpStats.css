@@ -46,6 +46,34 @@ div h1{
 	text-align: center;
 	font-family:  sans-serif;
 }
+
+
+
+/*	Reddit block	*/
+table>tbody.reddit td{
+	border-top: none;
+
+}
+tbody.reddit, td.score{
+	outline: 0.5px groove #A9A9A9; 
+}
+.redditTitle{
+	color:white;
+	text-align: center;
+	font-size:18px;
+	font-weight: 200px;
+}
+.redditAuthor{
+	text-align: right;
+}
+
+
+
+
+
+
+
+
 hr{
 	text-align: center;
 }

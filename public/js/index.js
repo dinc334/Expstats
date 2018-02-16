@@ -47,12 +47,12 @@
 				url: "/api/reddit",
 				success: function(data){
 					for(var i = 0; i<data.length;i++){
-						$('.table tbody.reddit').append('<tr><td>' + 
-							data[i].score + '</td><td>' + 
-							data[i].author + '</td><td>'+ 
-							data[i].title + '</td><td>'+ 
-							data[i].text + '</td><td>'+ 
-							data[i].time + '</td></tr>')
+						$('.table.reddit').append("<tbody class ='reddit'><tr><td class = 'score'> Score: " 
+							+ data[i].score + "</td><td colspan='4'class = 'redditTitle'>" 
+							+ data[i].title + "</td></tr><tr><td colspan='5' rowspan='3'>" 
+							+ data[i].text + "</td></tr><tr></tr><tr></tr><tr class = 'bottomborder'><td colspan = '2'>" 
+							+ data[i].time + "</td><td colspan='3' class = 'redditAuthor' style='color:white'>"
+							+ data[i].author +"</td></tr></tbody>")
 					}
 				}
 			})
