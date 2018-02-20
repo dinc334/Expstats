@@ -4,28 +4,90 @@
 		var data;
 		var price;
 		var dataPrice;
-		  $.ajax({
-		  	data: JSON.stringify(dataPrice),
-		  	type: 'GET',
-		  	url: '/api/prices',
-		  	success: function(data){
-		  		chart.series[0].update({data:data})
-		  	}
-		  });
-		$.ajax({
-			type: 'GET',
-			data: JSON.stringify(data),
-			url: "/api",
-			async: false ,
-			success: function(data){
+
+		
+		function drawChart(block,url,symbol){ 
+			//setInterval(function(){
+				$.getJSON(url,function(data){ 
+					var newdata = data.slice(-20);
+				  	var chart = Highcharts.chart(block, {
+					chart: {
+						type: 'line',
+						backgroundColor: null
+					},
+			    	tooltip: {
+			    		textAlign: 'center',
+					    formatter: function() {
+					        return  calcDate(this.x) + ' <br class="price"> Price was ' + this.y + symbol;
+					    }
+					},
+			    	navigator: {enabled: false},
+			    	legend: {enabled: false},
+			    	title: {
+			        	text: null
+				    },
+
+		            yAxis: {
+		                 gridLineColor: null
+
+		             },
+		            xAxis: {
+		            	type:'datetime'
+		            },
+
+		         	plotOptions: {
+				 	// здесь нужно указать период по времени с какого по какое
+				 		series: {
+				 			animation: false
+				 		}
+
+				    },
+				    series: [{
+				    	data: newdata,
+				        name: ' ',
+				        type: 'spline',
+				      	color: '#DC5100'
+				    	}]
+					});
+			
+				});
+			//},350000);
+		} 
+
+
+			// defaulf: display USD chart
+			//$("#containerBTC").css({"display":"none"});
+			drawChart('containerUSD','/api/pricesUSD','$');
+
+		    $('div.bottonUSD').click(function(){
+		    	drawChart('containerUSD','/api/pricesUSD','$');
+		        $(this).addClass("active"); 
+		        $(".bottonBTC").removeClass("active");
+		        $("#containerUSD").css({"display":"block"});
+		        $("#containerBTC").css({"display":"none"});
+
+		    });
+		    $(".bottonBTC").click(function(){
+		        $(this).addClass("active");
+		        $(".bottonUSD").removeClass("active");
+		        drawChart('containerBTC','/api/pricesBTC',' BTC');
+		        $("#containerBTC").css({"display":"block"});
+		        $("#containerUSD").css({"display":"none"});
+		    });
+
+		//setInterval(function(){ 
+		$.getJSON('/api',function(data){ 
+			
 				price = Number(data[0].priceUSD).toFixed(2);
-				$('.priceUSD').append('<h3>' + '$' + Number(data[0].priceUSD).toFixed(2) + '</h3>');
-				$('.priceBTC').append('<h3>' + Number(data[0].priceBTC).toFixed(7) + ' btc' + '</h3>');
-				$('.marketcap').append('<h3>' + '$ ' + new Intl.NumberFormat('us-US').format(parseInt(data[0].marketcap)) + '</h3>');
-				$('.supply').append('<h3>' + new Intl.NumberFormat('us-US').format(parseInt(data[0].supply)) + ' EXP' + '</h3>');
-				$('.volume').append('<h3>' + '$ ' + new Intl.NumberFormat('us-US').format(parseInt(data[0].volume)) + '</h3>');
+				$('.priceUSD').html('<span>EXP / USD</span><h3>$' + Number(data[0].priceUSD).toFixed(2) + '</h3>');
+				$('.priceBTC').html('<span>EXP / BTC</span><h3>' + Number(data[0].priceBTC).toFixed(7) + '</h3>');
+				$('.marketcap').html('<span>MarcketCap</span><h3>$' + new Intl.NumberFormat('us-US').format(parseInt(data[0].marketcap)) + '</h3>');
+				$('.supply').html('<span>Total Supply</span><h3>' + new Intl.NumberFormat('us-US').format(parseInt(data[0].supply)) + '</h3>');
+				$('.volume').html('<span>Volume</span><h3>$' + new Intl.NumberFormat('us-US').format(parseInt(data[0].volume)) + '</h3>');
 			}
-		})
+		)//},350000);
+
+
 
   	  	// Для Динамического графика
 
@@ -35,8 +97,8 @@
 				url: "/api/table",
 				success: function(data){
 					for(var i = 0; i<data.length;i++){
-						$('.table tbody.richlist').append('<tr class ="addressTable"><td><a href = ' + gander +  data[i].name + ' target="_blank">' + data[i].name +'</a></td>' + '<td>' + Intl.NumberFormat('us-US').format(Number(data[i].balance)) +
-						 '</td>'+ '<td>'+ Intl.NumberFormat('us-US').format(Number(data[i].balance) * price) + ' $'+'</td></tr>')
+						$('.table tbody.richlist').append('<tr class ="addressTable"><td><a href = ' + gander +  data[i].name + ' target="_blank">' + data[i].name +'</a></td><td>' + Intl.NumberFormat('us-US').format(Number(data[i].balance)) +
+						 '</td><td>'+ Intl.NumberFormat('us-US').format(Number(data[i].balance) * price) + '$</td></tr>')
 					}
 				}
 			})
@@ -65,45 +127,6 @@
 				  day: 'numeric',
 				  weekday: 'long'
 				};
-
 			return data.toLocaleString("en-US", options);
 		}
-
-		$()
-
-		var chart = Highcharts.chart('chart', {
-			chart: {
-				type: 'line',
-				backgroundColor: null
-			},
-	    	tooltip: {
-	    		textAlign: 'center',
-			    formatter: function() {
-			        return  calcDate(this.x) + ' <br class="price"> Price was ' + this.y + '$';
-			    }
-			},
-	    	navigator: {enabled: false},
-	    	legend: {enabled: false},
-	    	title: {
-	        	text: null
-		    },
-
-            yAxis: {
-                 gridLineColor: null
-
-             },
-            xAxis: {
-            	type:'datetime'
-            },
-
-         	plotOptions: {
-		 	// здесь нужно указать период по времени с какого по какое
-
-		    },
-		    series: [{
-		        name: ' ',
-		        type: 'line',
-		      	color: '#DC5100'
-		    	}]
-			});
-		});
+});

@@ -1,25 +1,30 @@
 
-
-
-
 <div class = 'container' >
 	<div class="row">
 		<h1>ExpStats</h1>
 	</div>
 
+	<div class="row" style="margin-top:23px">
+		<div class="col-md-6 col-md-offset-8 bottoms">
+			<div class="bottonBTC">BTC</div>
+			<div class="bottonUSD active">USD</div>
+		</div>
+	</div>
+
 	<div class="row" >
 		<div class="col-md-9 col-md-offset-1" >
-				<div id = 'chart'></div>
+				<div id = 'containerUSD'></div>
+				<div id = 'containerBTC'></div>
 		</div>
 	</div>
 
 	<div class="row block-infos">
-		<div class = "col-md-9 col-md-offset-1 ">
-			<div class = 'block-info priceUSD'><span>Price in USD</span></div>
-			<div class = 'block-info priceBTC'><span>Price in BTC </span></div>
-			<div class = 'block-info marketcap'><span>MarcketCap </span></div>
-			<div class = 'block-info volume'><span>Volume </span></div>
-			<div class = 'block-info supply'><span>Total Supply </span></div>
+		<div class = "col-md-9 col-md-offset-2 col-sm-3">
+			<div class = 'block-info priceUSD'></div>
+			<div class = 'block-info priceBTC'></div>
+			<div class = 'block-info marketcap'></div>
+			<div class = 'block-info volume'></div>
+			<div class = 'block-info supply'></div>
 	
 		</div>	
 	</div>
@@ -86,8 +91,8 @@
 
 	<div class="container">
 	<div class="row">
-		<div class="col-md-9 col-md-offset-1">
-			<h2 style="text-align: center; margin-bottom: 20px">Latest Reddit topics</h2>
+		<div class="col-lg-9 col-md-6 col-sm-3 col-md-offset-1">
+			<h2 style="text-align: center; margin-bottom: 20px">Latest Reddit Topics</h2>
 			<table class ='table no-footer reddit'>
 
 			</table>
@@ -143,4 +148,4 @@
 
 </div>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-<script src = '/js/index.js'></script>
+<script async src = '/js/index.js'></script>

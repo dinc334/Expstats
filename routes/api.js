@@ -6,7 +6,7 @@ const express = require('express');
 const request = require('request');
 const snoowrap = require("snoowrap");
 const geoip   = require('geoip-lite');
-// for json parser
+// for reddit API
 var data = require('./config.js');
 const r = new snoowrap(data);
 
@@ -16,14 +16,21 @@ const Sequelize = require('sequelize');
 const MARKETCAP = 'https://api.coinmarketcap.com/v1/ticker/';
 const IP = '192.168.2.1';
 //-----------------------------------------
+// data for USD chart
 const Price = functions.define('price', {
   price: {
     type: Sequelize.STRING
+  },
+  // data for BTC chart
+  priceBTC: {
+  	type: Sequelize.STRING
   },
   date: {
     type: Sequelize.STRING
   }
 });
+
+
 const Admin = functions.define('admin', {
   ip: {
     type: Sequelize.STRING
@@ -52,10 +59,8 @@ function calcDate(date){
 //---------------------------------------
 
 router.get('/', (req,res,next) => {
-	console.log(req.cookies);
 	var ip = req.ip;
 	var geo = geoip.lookup(ip);
-
 	res.render('index');
 	if(ip != IP){
 		Admin.create({
@@ -65,6 +70,7 @@ router.get('/', (req,res,next) => {
 			date: Date.now()
 		})
 	}
+	console.log('Ip: '+ ip + '\nGeo: ' + geo +'\n------------------');
 })
 
 router.get('/api', async (req,res,next) => {
@@ -88,10 +94,11 @@ router.get('/api', async (req,res,next) => {
 						supply    : marketcapInfo['available_supply']
 					});
 
-					// запись в БД каждые 5 минут хотя бы 
+					
 					 // if(ip != IP){
 						 Price.create({
 						    price: Number(marketcapInfo['price_usd']).toFixed(2),
+						    priceBTC: Number(marketcapInfo['price_btc']).toFixed(7),
 						    date: Date.now()
 						 });
 					 // }
@@ -105,7 +112,7 @@ router.get('/api', async (req,res,next) => {
 router.get("/api/reddit", async (req,res)=>{
 	var data = [];
 	r.getSubreddit('ExpanseOfficial').getHot().then(Listing =>{
-		// get latest 10 top posts from subreddit, normally it will be Listing.length
+		// get latest 8 top posts from subreddit, normally it will be Listing.length
 		for(var i = 0; i<8;i++){
 			if(Listing[i].selftext !== ''){
 				data.push({
@@ -122,7 +129,7 @@ router.get("/api/reddit", async (req,res)=>{
 	})
 })
 
-router.get('/api/prices', async (req,res) => {
+router.get('/api/pricesUSD', async (req,res) => {
 	// Достаем Данные с бд и отправляем на гет запрос
 	var listPrice = [];
 	await Price.findAll({
@@ -132,8 +139,20 @@ router.get('/api/prices', async (req,res) => {
 		for(var i=0;i<prices.length;i++){
 			listPrice.push([Number(prices[i].dataValues.date), Number(prices[i].dataValues.price)])
 		}
-		// console.log(prices[0].dataValues.price);
-		// listPrice.push([prices.price,prices.date])
+	
+	});
+	res.json(listPrice);
+	
+})
+router.get('/api/pricesBTC', async (req,res) => {
+	var listPrice = [];
+	await Price.findAll({
+		attributes : ['priceBTC','date'],
+		
+	}).then(prices => {
+		for(var i=0;i<prices.length;i++){
+			listPrice.push([Number(prices[i].dataValues.date), Number(prices[i].dataValues.priceBTC)])
+		}
 	});
 	res.json(listPrice);
 	
@@ -158,26 +177,7 @@ router.get('/api/table', (req,res) => {
 				res.json(data);
 			 })
 })
-// Костыль
-router.get('/api/table2', (req,res) => {
-		var data = [];
-			request('http://52.168.6.76:8080/addresses?page=2', (err,response,body) => {
-				try{
-					var dataCoin = JSON.parse(body);
-					var moreData = dataCoin.data;
-				} catch (e) {
-					console.log("Api Gander.tech Problem" + e);
-					return next(e,null);
-				}
-				for(var y = 0; y< moreData.length; y++){
-					data.push({
-						name 	: moreData[y].name,
-						balance : moreData[y].balance
-					})
-				}
-				res.json(data);
-			 })
-})
+
 router.get('/api/admin', async (req,res) => {
 	var adminData = [];
 	await Admin.findAll({
@@ -206,21 +206,21 @@ router.get('/admin', (req,res)=> {
 	 }
 })
 //----------------------
-router.get('/test',async (req,res)=>{
-	// var temp = new Date(1506336331045);
-	// console.log('DATA ' + temp.getDate());
-	// await Admin.count({
-	// 	where: {
-	// 		city: 'Singapore'
-	// 	}
-	// }).then(result => {
-	// 	console.log(result);
-	// })
-	await Admin.findAll({
-   attributes: [Sequelize.fn('COUNT', Sequelize.col('country'))], 
-   group: ['Admin.country']
- }).then(function (result) {console.log(result)});
-})
+// router.get('/test',async (req,res)=>{
+// 	// var temp = new Date(1506336331045);
+// 	// console.log('DATA ' + temp.getDate());
+// 	// await Admin.count({
+// 	// 	where: {
+// 	// 		city: 'Singapore'
+// 	// 	}
+// 	// }).then(result => {
+// 	// 	console.log(result);
+// 	// })
+// 	await Admin.findAll({
+//    attributes: [Sequelize.fn('COUNT', Sequelize.col('country'))], 
+//    group: ['Admin.country']
+//  }).then(function (result) {console.log(result)});
+// })
 
 
 //----------------------

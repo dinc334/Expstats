@@ -8,7 +8,10 @@ const sequelize = new Sequelize('dinc', 'dyrk', 'dyrk', {
 	    min: 0,
 	    idle: 10000
 	  },
-	dialect: 'postgres'
+	dialect: 'postgres',
+	// disable logging in console
+	logging: false
+
 });
 
 sequelize
